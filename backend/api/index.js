@@ -1,8 +1,9 @@
+// api/index.js
+
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const repositoryRoutes = require('./routes/repositoryRoutes');
-const { MONGODB_URI } = require('./config/database');
+const { connectToDatabase } = require('./config/database');
 
 const app = express();
 
@@ -10,20 +11,19 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-const connectDB = async () => {
+const initializeDB = async () => {
   try {
-    await mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('Connected to MongoDB');
+    const db = await connectToDatabase();
+    console.log('Database initialized');
+    // You can pass `db` to other modules if needed
   } catch (err) {
     console.error('MongoDB connection error:', err);
-    // In a serverless environment, it's better to throw the error
-    // so that the function can restart and try to reconnect
     throw err;
   }
 };
 
-// Call connectDB, but don't wait for it (faster cold starts)
-connectDB();
+// Call initializeDB
+initializeDB();
 
 app.use('/api/repositories', repositoryRoutes);
 
