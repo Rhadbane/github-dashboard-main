@@ -3,7 +3,7 @@
 require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/github-dashboard-main';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:5173/github-dashboard-main';
 
 const client = new MongoClient(MONGODB_URI, {
   serverApi: {
